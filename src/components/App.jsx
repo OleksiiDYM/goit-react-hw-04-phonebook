@@ -1,76 +1,79 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { nanoid } from 'nanoid';
-import ContactForm from './ContactForm/ContactForm';
-import ContactList from './ContactList/ContactList';
-import ContactItem from './ContactItem/ContactItem';
-import Finder from './Finder/Finder';
+import ContactForm from './ContactForm';
+import ContactList from './ContactList';
+import Filter from 'components/Filter';
 
-const mainStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'left',
-  fontSize: 20,
-  color: '#3d2f26ed',
-  marginLeft: '30px',
-};
-const App = () => {
+export const App = () => {
+  const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
-  const [contacts, setContacts] = useState(
-    JSON.parse(localStorage.getItem('contacts')) ?? []
-  );
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-  const addContact = (name, number) => {
-    const contact = {
-      id: nanoid(),
-      name,
-      number,
-    };
+  const isFirstRender = useRef(true);
 
-    const enterContacts = contacts.some(
-      i =>
-        (i.name.toLowerCase() === contact.name.toLowerCase() &&
-          i.number === contact.number) ||
-        i.number === contact.number
-    );
-    enterContacts
-      ? alert(`${name} or ${number} is already in contacts`)
-      : setContacts([contact, ...contacts]);
+  useEffect(() => {
+    const contactList = JSON.parse(localStorage.getItem('contacts'));
+    if (contactList) setContacts(contactList);
+  }, []);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    const contactList = JSON.stringify(contacts);
+    if (contactList) localStorage.setItem('contacts', contactList);
+  }, [contacts]);
+
+  const addContact = data => {
+    if (
+      contacts.some(
+        contact => contact.name.toLowerCase() === data.name.toLowerCase()
+      )
+    ) {
+      return alert(`${data.name} or ${data.number} is already exist`);
+    }
+    setContacts(prev => [...prev, { ...data, id: nanoid() }]);
   };
 
-  const getListContacts = () => {
-    return contacts.filter(contact =>
+  const removeContact = id => {
+    setContacts(prev => prev.filter(contact => contact.id !== id));
+  };
+
+  const handleChange = ({ target: { name, value } }) => {
+    switch (name) {
+      case 'filter':
+        setFilter(value);
+        break;
+      default:
+        console.log(`Name - ${name} is not defined`);
+    }
+  };
+
+  const getFilteredContacts = () =>
+    contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );
-  };
-
-  const changeFilter = event => {
-    setFilter(event.target.value);
-  };
-
-  const deleteContact = id => {
-    setContacts(contacts.filter(contact => contact.id !== id));
-    setFilter('');
-  };
-
-  const visibleContact = getListContacts();
 
   return (
-    <div style={mainStyle}>
-      <h2>Phonebook</h2>
+    <div
+      style={{
+        margin: 24,
+      }}
+    >
+      <h1>Phonebook</h1>
       <ContactForm onSubmit={addContact} />
-      <h3>Contacts</h3>
-      <Finder filter={filter} onChange={changeFilter} />
-      <ContactList>
-        <ContactItem
-          contacts={visibleContact}
-          deleteContactOn={deleteContact}
-        />
-      </ContactList>
+      <h2
+        style={{
+          fontSize: 28,
+        }}
+      >
+        Contacts
+      </h2>
+      <Filter filter={filter} handleChange={handleChange} />
+      <ContactList
+        filteredContacts={getFilteredContacts()}
+        removeContact={removeContact}
+      />
     </div>
   );
 };
-
-export default App;
