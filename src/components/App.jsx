@@ -31,7 +31,7 @@ const App = () => {
 
     const enterContacts = contacts.some(
       i =>
-        (i.name.toLowerCase === contact.name.toLowerCase() &&
+        (i.name.toLowerCase() === contact.name.toLowerCase() &&
           i.number === contact.number) ||
         i.number === contact.number
     );
