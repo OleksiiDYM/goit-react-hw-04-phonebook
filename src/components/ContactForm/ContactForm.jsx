@@ -29,6 +29,8 @@ const ContactForm = ({ onSubmit }) => {
   return (
     <form
       style={{
+        display: 'flex',
+        flexDirection: 'column',
         maxWidth: '250px',
         fontSize: 30,
       }}
