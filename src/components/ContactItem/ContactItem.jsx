@@ -18,7 +18,7 @@ const ContactItem = ({ contacts, deleteContactOn }) => {
           boxSizing: 'border-box',
           width: '100px',
           height: '30px',
-          background: '#808e9e',
+          background: '#e3242b',
           border: 'none',
           cursor: 'pointer',
           borderRadius: '6px',
@@ -36,8 +36,6 @@ const ContactItem = ({ contacts, deleteContactOn }) => {
 };
 
 ContactItem.propTypes = {
-  // contacts: PropTypes.array.isRequired,
-
   contacts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -45,7 +43,6 @@ ContactItem.propTypes = {
       number: PropTypes.string.isRequired,
     })
   ).isRequired,
-
   onDeleteContact: PropTypes.func,
 };
 

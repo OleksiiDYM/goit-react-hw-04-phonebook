@@ -1,18 +1,9 @@
-// import React, { Component } from 'react';
 import { useState } from 'react';
-// import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 
-// Input form
 const ContactForm = ({ onSubmit }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
-  // class ContactForm extends Component {
-  //   state = {
-  //     name: '',
-  //     number: '',
-  //   };
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -20,14 +11,8 @@ const ContactForm = ({ onSubmit }) => {
     setName('');
     setNumber('');
   };
-  // handleSubmit = event => {
-  //   event.preventDefault();
-  //   this.props.onSubmit(this.state);
-  //   this.clearForm();
-  //   console.log(this.state);
-  // };
+
   const handleChange = event => {
-    console.log(event.target.value, event.target.name);
     const { name, value } = event.target;
     switch (name) {
       case 'name':
@@ -40,22 +25,7 @@ const ContactForm = ({ onSubmit }) => {
         break;
     }
   };
-  // handleChange = event => {
-  //   const { name, value } = event.currentTarget;
-  //   this.setState({
-  //     [name]: value,
-  //     id: nanoid(),
-  //   });
-  //   console.log(value);
-  // };
-  // clearForm = () => {
-  //   this.setState({
-  //     name: '',
-  //     number: '',
-  //   });
-  // };
-  // render() {
-  // const { name, number } = this.state;
+
   return (
     <form
       style={{
@@ -69,14 +39,13 @@ const ContactForm = ({ onSubmit }) => {
         <input
           style={{
             height: '34px',
-            background: '#ccd6e3',
+            background: '#c0e6f0',
             borderRadius: '6px',
           }}
           type="text"
           onChange={handleChange}
           name="name"
           value={name}
-          // pattern for input
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
@@ -85,11 +54,10 @@ const ContactForm = ({ onSubmit }) => {
 
       <label>
         Number
-        {/* инпут сo встроенной валидацией для имени контакта. */}
         <input
           style={{
             height: '34px',
-            background: '#ccd6e3',
+            background: '#c0e6f0',
             borderRadius: '6px',
           }}
           type="tel"
@@ -107,7 +75,7 @@ const ContactForm = ({ onSubmit }) => {
           boxSizing: 'border-box',
           width: '100px',
           height: '34px',
-          background: '#808e9e',
+          background: '#82eefd',
           border: 'none',
           cursor: 'pointer',
           borderRadius: '6px',
@@ -120,7 +88,6 @@ const ContactForm = ({ onSubmit }) => {
     </form>
   );
 };
-// }
 ContactForm.propTypes = {
   name: PropTypes.string,
   number: PropTypes.string,
